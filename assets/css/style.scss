@@ -27,4 +27,121 @@
     background: rgba(255, 255, 255, 0.14);
     text-decoration: none;
   }
+
+.about-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    max-width: 2000px;
+  }
+
+/* Force side-by-side on desktop */
+@media (min-width: 768px) {
+    .about-container {
+      flex-wrap: nowrap;
+    }
+  }
+  
+  /* Allow stacking on mobile */
+@media (max-width: 767px) {
+    .about-container {
+      flex-wrap: wrap;
+    }
+  }
+  
+.about-photo {
+    width: 264px;
+    height: 294px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    object-position: center;
+    object-fit: cover;
+    order: 2;
+  }
+  
+.about-text {
+    max-width: 1000px;
+    order: 1;
+  }
+  
+.about-photo-float {
+    float: right;                 
+    width: 264px;
+    height: 294px;
+    margin: 1.4rem 0 1.5rem 2rem;       
+    object-fit: cover;
+    object-position: 50% 40%;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    display: block;
+  }
+  
+  /* Clear float before next section */
+.about-bio::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  .header-bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+  
+  /* Center nav */
+  .header-nav-center {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Right-align icons */
+  .header-social {
+    grid-column: 3;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  
+.header-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.85);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+.header-social a:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+  
+.header-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+  
+  /* Mobile: center everything */
+@media (max-width: 700px) {
+    .header-bar {
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+
+.bio-divider {
+    border: none;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 1.5rem 0;
+  }
   

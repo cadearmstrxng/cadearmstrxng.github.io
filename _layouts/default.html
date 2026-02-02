@@ -12,12 +12,39 @@
       <h1 class="project-name">{{ page.title | default: site.title }}</h1>
       <h2 class="project-tagline">{{ site.description }}</h2>
 
-      <nav class="site-nav" aria-label="Primary">
-        <a href="{{ "/" | relative_url }}">Home</a>
-        <a href="{{ "/about/" | relative_url }}">About</a>
-        <a href="{{ "/projects/" | relative_url }}">Projects</a>
-        <a href="{{ "/assets/Cade_Armstrong_CV.pdf" | relative_url }}">CV</a>
-      </nav>
+      <div class="header-bar">
+        <div class = "header-nav-center">
+            <nav class="site-nav" aria-label="Primary">
+            <a href="{{ "/" | relative_url }}">Home</a>
+            <a href="{{ "/about/" | relative_url }}">About</a>
+            <a href="{{ "/projects/" | relative_url }}">Projects</a>
+            <a href="{{ "/assets/Cade_Armstrong_CV.pdf" | relative_url }}">CV</a>
+            </nav>
+        </div>
+      
+        <div class="header-social">
+          <!-- GitHub -->
+          <a href="https://github.com/cadearmstrxng"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.09 3.29 9.41 7.86 10.94.57.1.78-.25.78-.56v-2.02c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.17a11.1 11.1 0 0 1 5.8 0c2.2-1.48 3.17-1.17 3.17-1.17.63 1.59.24 2.76.12 3.05.74.8 1.18 1.82 1.18 3.07 0 4.4-2.7 5.36-5.27 5.64.41.36.77 1.07.77 2.16v3.2c0 .31.2.67.79.56A11.52 11.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/>
+            </svg>
+          </a>
+      
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/YOUR_LINKEDIN_USERNAME/"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4.98 3.5C3.34 3.5 2 4.84 2 6.48c0 1.63 1.34 2.97 2.98 2.97h.02c1.65 0 2.98-1.34 2.98-2.97C7.96 4.84 6.63 3.5 4.98 3.5zM2.4 21.5h5.17V9.98H2.4V21.5zM9.34 9.98v11.52h5.17v-6.43c0-3.58 4.66-3.87 4.66 0v6.43H24V13.4c0-6.29-7.2-6.06-9.49-2.96V9.98H9.34z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
 
       {% if site.github.is_project_page %}
         <a class="btn" href="{{ site.github.repository_url }}">View on GitHub</a>
