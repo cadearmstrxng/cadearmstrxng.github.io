@@ -1,1 +1,12 @@
+title: "Cade Armstrong"
+description: "Astrodynamics • Controls • Multi-agent decision making"
+url: "https://username.github.io"   # replace username
+theme: minima
 
+header_pages:
+  - about.md
+  - projects.md
+
+markdown: kramdown
+plugins:
+  - jekyll-feed
