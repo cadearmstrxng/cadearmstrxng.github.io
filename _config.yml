@@ -1,12 +1,12 @@
 title: "Cade Armstrong"
 description: "Astrodynamics • Controls • Multi-agent decision making"
-url: "https://username.github.io"   # replace username
+url: "https://<username>.github.io"
+
 theme: jekyll-theme-cayman
 
-header_pages:
-  - about.md
-  - projects.md
-
-markdown: kramdown
 plugins:
   - jekyll-feed
+
+# Optional: makes pretty URLs like /about/ instead of /about.html
+permalink: pretty
+

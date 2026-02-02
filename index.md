@@ -1,13 +1,18 @@
 ---
-layout: home
+layout: default
 title: Home
 ---
 
-Hi — I’m Cade. I work on orbital mechanics, controls, and multi-agent decision making.
+# Hi — I’m Cade
 
-### Quick links
-- [About](/about)
-- [Projects](/projects)
+I work on orbital mechanics, controls, and multi-agent decision making.
 
-### Latest posts
-(These will show automatically with the `home` layout.)
+## What I’m up to
+- PhD work: …
+- Current project: …
+- Email: …
+
+## Highlights
+- Paper: …
+- Software: …
+- Talks: …

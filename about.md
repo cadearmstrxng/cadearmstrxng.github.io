@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: default
 title: About
 permalink: /about/
 ---
 
-Write a short bio here.
+## Bio
+Write a paragraph.
 
-- Interests: orbital mechanics, control, dynamic games
-- Email: you@example.com
-- CV: (link it later)
-
+## Interests
+- …
+- …

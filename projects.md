@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: default
 title: Projects
 permalink: /projects/
 ---
 
-## Project A
-One-liner + link.
+## Project name
+**One-liner**. Links: [code](#) · [paper](#)
 
-## Project B
-One-liner + link.
-
+- What it is
+- What you did
+- Key result
