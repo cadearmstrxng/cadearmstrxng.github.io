@@ -4,7 +4,7 @@
 @import "{{ site.theme }}";
 
 .page-header { padding: 2.5rem 1.5rem; }
-.main-content { font-size: 18px; line-height: 1.65; }
+.main-content { font-size: 18px; line-height: 1.65; max-width: 1200px;}
 .main-content h1, .main-content h2 { margin-top: 2.0rem; }
 
 .site-nav {
@@ -81,6 +81,12 @@
   
   /* Clear float before next section */
 .about-bio::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  .home-section::after {
     content: "";
     display: block;
     clear: both;
@@ -176,7 +182,7 @@
   
   :root[data-theme="dark"] body {
     background: #1c1c1e;          // 👈 neutral dark gray (not blue)
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.82);
   }
   
   :root[data-theme="dark"] .main-content {
@@ -186,7 +192,7 @@
   :root[data-theme="dark"] .main-content h1,
   :root[data-theme="dark"] .main-content h2,
   :root[data-theme="dark"] .main-content h3 {
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.9);
   }
   
   :root[data-theme="dark"] .main-content a {
@@ -198,3 +204,119 @@
     color: rgba(255, 255, 255, 0.6);
   }
   
+  .home-headshot {
+    width: 450px;
+    height: 307px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    object-position: center;
+    object-fit: cover;
+    order: 2;
+  }
+  
+  .home-headshot-float {
+    float: right;                 
+    width: 400px;
+    height: 272px;
+    margin: 1.4rem 0 1.2rem 2rem;       
+    object-fit: cover;
+    object-position: 50% 40%;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    display: block;
+  }
+
+  /* --- Card grid section --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0 1rem 0;
+}
+
+@media (max-width: 1000px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Individual card --- */
+.card {
+  display: block;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+  text-decoration: none;
+}
+
+.card__title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+
+.card__thumb {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 16 / 9;
+  background: rgba(0,0,0,0.08);
+  margin-bottom: 0.9rem;
+}
+
+.card:hover .card__title {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.card__text {
+  color: rgba(0,0,0,0.75);
+  line-height: 1.5;
+}
+
+/* Dark mode compatibility (matches your existing theme switch) */
+:root[data-theme="dark"] .card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+
+:root[data-theme="dark"] .card__thumb {
+  background: rgba(255,255,255,0.10);
+}
+
+:root[data-theme="dark"] .card__text {
+  color: rgba(255,255,255,0.78);
+}
+/* Force card text to be white in dark mode */
+:root[data-theme="dark"] .card {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Ensure title specifically stays white */
+:root[data-theme="dark"] .card__title {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Prevent link styles from leaking into cards */
+:root[data-theme="dark"] .card:hover,
+:root[data-theme="dark"] .card:visited {
+  color: rgba(255, 255, 255, 0.82);
+}

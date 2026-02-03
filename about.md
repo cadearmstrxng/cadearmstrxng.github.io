@@ -6,7 +6,7 @@ permalink: /about/
 
 
 <div class="about-bio" markdown="1">
-## Bio
+# Bio
 
   <img src="/assets/img/headshot.jpg"
        alt="Photo of Cade Armstrong"
