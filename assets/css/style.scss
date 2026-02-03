@@ -144,4 +144,57 @@
     background: rgba(0,0,0,0.08);
     margin: 1.5rem 0;
   }
+
+
+  .theme-toggle {
+    appearance: none;
+    border: 0;
+    background: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.92);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.26);
+  }
+  
+  .theme-toggle:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.55);
+    outline-offset: 2px;
+  }
+  
+  /* ---- Dark mode theme ---- */
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  
+  :root[data-theme="dark"] body {
+    background: #1c1c1e;          // 👈 neutral dark gray (not blue)
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+  :root[data-theme="dark"] .main-content {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  
+  :root[data-theme="dark"] .main-content h1,
+  :root[data-theme="dark"] .main-content h2,
+  :root[data-theme="dark"] .main-content h3 {
+    color: rgba(255, 255, 255, 0.95);
+  }
+  
+  :root[data-theme="dark"] .main-content a {
+    color: #9ad0ff;               // softer blue, less neon
+  }
+  
+  :root[data-theme="dark"] .site-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.6);
+  }
   

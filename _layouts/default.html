@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#157878">
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
   </head>
+  <script src="{{ "/assets/js/theme.js" | relative_url }}"></script>
   <body>
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ page.title | default: site.title }}</h1>
@@ -42,6 +43,11 @@
               <path d="M4.98 3.5C3.34 3.5 2 4.84 2 6.48c0 1.63 1.34 2.97 2.98 2.97h.02c1.65 0 2.98-1.34 2.98-2.97C7.96 4.84 6.63 3.5 4.98 3.5zM2.4 21.5h5.17V9.98H2.4V21.5zM9.34 9.98v11.52h5.17v-6.43c0-3.58 4.66-3.87 4.66 0v6.43H24V13.4c0-6.29-7.2-6.06-9.49-2.96V9.98H9.34z"/>
             </svg>
           </a>
+
+          <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+            <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+          </button>
+          
         </div>
       </div>
       
