@@ -18,8 +18,12 @@ As doctoral student in the Department of Aerospace Engineering at the University
 <div class="card-grid">
   <a class="card" href="{{ '/projects/inferring_discount_factors' | relative_url }}">
     <div class="card__title">Inferring Discount Factors</div>
-    <div class="card__thumb"></div>
-    <div class="card__text">One–two sentence summary of what this project is and why it matters.</div>
+    <div class="card__thumb"><img
+    src="{{ '/assets/img/sim_visualization.png' | relative_url }}"
+    alt="Inferring Foresightedness in Noncooperative, Dynamic Games"
+    class="card__img"
+    /></div>
+    <div class="card__text">Using inverse game theory to predict and plan around foresighted behavior.</div>
   </a>
 
   <a class="card" href="{{ '/projects/learning_value_functions' | relative_url }}">
@@ -34,6 +38,14 @@ As doctoral student in the Department of Aerospace Engineering at the University
     <div class="card__text">One–two sentence summary. Link goes to the Projects page section.</div>
   </a>
 </div>
+
+<hr class="bio-divider">
+
+## Contact Me
+
+If you're interested in learning more or wanting to get in touch, feel free to reach out!
+
+- **Email:** <a href="mailto:cadearmstrong@utexas.edu">cadearmstrong@utexas.edu</a>
 
 
 </div>

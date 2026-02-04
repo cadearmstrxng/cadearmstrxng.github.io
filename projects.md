@@ -12,8 +12,12 @@ For each project, I include a short summary and links to code, papers, or demos 
 <div class="card-grid">
   <a class="card" href="{{ '/projects/inferring_discount_factors' | relative_url }}">
     <div class="card__title">Inferring Discount Factors</div>
-    <div class="card__thumb"></div>
-    <div class="card__text">One–two sentence summary of what this project is and why it matters.</div>
+    <div class="card__thumb"><img
+    src="{{ '/assets/img/sim_visualization.png' | relative_url }}"
+    alt="Inferring Foresightedness in Noncooperative, Dynamic Games"
+    class="card__img"
+    /></div>
+    <div class="card__text">Using inverse game theory to predict and plan around foresighted behavior.</div>
   </a>
 
   <a class="card" href="{{ '/projects/learning_value_functions' | relative_url }}">
