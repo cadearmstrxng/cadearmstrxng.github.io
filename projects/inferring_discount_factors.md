@@ -186,7 +186,58 @@ Problem 1 can be separated into an outer *inverse* problem and an inner *forward
 ## Solution Approach
 Let's pause and recap. We want to solve an optimization problem that finds game parameters and discount factors that maximize the likelihood of producing some observations we have of the game. However, due to the game's structure, this optimization problem is both non-convex *and* non-smooth? How do we even go about solving this?
 
-Our approach: a constrained gradient decent algorithm that requires us to take derivatives of game *solutions* $(\textbf{x},\textbf{u})$ with respect to parameters $(\gamma, \theta)$.
+Our approach: a constrained gradient decent algorithm that requires us to take derivatives of game *solutions* $(\textbf{x},\textbf{u})$ with respect to parameters $(\gamma, \theta)$. First, we have to represent $\mathcal{G}(\theta, \gamma)$ as a workable form: let's convert the game's first-order necessary conditions into an MiCP!
+
+### GOLNE as an MiCP
+
+As one does when beginning a constrained optimization problem, we need begin by writing the agents' first order necessary conditions. First, we introduce Lagrange multipliers $\lambda^i$ and $\mu^i$ to represent agent $i$'s inequality and equality constraints, respectively. We can then write its Lagrangian as:
+
+$$
+\mathcal{L}^i (\textbf{x},\textbf{u},\lambda^i$, $\mu^i; \gamma, \theta) = C^i (\textbf{x},\textbf{u}; \gamma, \theta) - \lambda^{i,\top} I^i(\textbf{x},\textbf{u};\theta^i) -\mu^{i,\top} E^i(\textbf{x},\textbf{u};\theta^i).
+$$
+
+When the gradients of the constraints are linearly independent at a candidate solution point, we satisfy the linear independence constraint qualification. As such, the following Karush-Kuhn-Tucker (KKT) conditions must hold for each agent $i$:
+
+$$
+\begin{align}
+\nabla_\textbf{x} \mathcal{L}^i = 0, \nabla_{\textbf{u}^i} \mathcal{L}^i = 0, E^i = 0 \\
+0 \leq \lambda^i \perp I^i(\textbf{x},\textbf{u};\theta^i) \geq 0.
+\end{align}
+$$
+
+These equations have the exact same form as the MiCP formulation we previously discussed! Let's make it even more explicit. 
+
+The MiCP decision variable $r$ is now the aggregated states, actions, and equality Lagrangian multipliers for all agents, and the MiCP decision variable $z$ is now all agents' inequality Lagrange multipliers, i.e.,
+
+$$
+\begin{align}
+r &= (\textbf{x}^\top, \textbf{u}^\top, \mu^{1,\top}, \mu^{2,\top},...,\mu^{N,\top})^\top\\
+z &= (\lambda^{1,\top}, \lambda^{2,\top},...,\lambda^{N,\top})^\top.
+\end{align}
+$$
+
+For brevity, let's define $v = (r^\top, z^\top)^\top$. Then, the parametrized MiCP for each agent can be written as:
+
+$$
+c(v; \theta, \lambda) = [(\nabla_\textbf{x}\mathcal{L}^i)^\top_{i\in[N]}, (\nabla_{\textbf{u}^i}\mathcal{L}^i)^\top_{i\in[N]}, (E^i)^\top_{i\in[N]}]^\top
+h(v; \theta, \lambda) = [(I^i)^\top_{i\in[N]}]
+$$
+
+For brevity, let's define a function $F$ such that $F = [c(\cdot)^\top,h(\cdot)^\top]^\top$.
+
+### Optimizing Game Parameters with Gradient Descent
+
+Now that we have constructed an MiCP that encodes our game's first order necessary conditions, we can do some interesting things with it. For example, applying the chain rule will allow us to achieve our goal of deriving game solutions with respect to the game's parameters.
+
+<!-- <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem (IFT)</a> -->
+
+Let's denote the objective of Problem 1 as $\mathcal{P}(\cdot)$ such that $\mathcal{P}(\textbf{x}(\theta,\gamma)) = \sum_{t=1}^T ~(h_t(x(t)) - y_t)^\top \Sigma_t^{-1} (h_t(x(t)) - y_t)$. We can then leverage the chain rule to compute its total derivative with respect to $(\theta,\gamma)$:
+
+$$
+\nabla_{(\theta, \lambda)} \mathcal{P}(\textbf{x}(\theta,\gamma)) = (\nabla_{(\theta, \lambda)} v)^\top (\nabla_v \textbf{x})^\top (\nabla_\textbf{x} \mathcal{P}),
+$$
+
+with which we can update $(\theta,\gamma)$ accordingly.
 
 ## Experimental Setup
 
