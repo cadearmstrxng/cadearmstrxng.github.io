@@ -216,11 +216,13 @@ z &= (\lambda^{1,\top}, \lambda^{2,\top},...,\lambda^{N,\top})^\top.
 \end{align}
 $$
 
-For brevity, let's define $v = (r^\top, z^\top)^\top$. Then, the parametrized MiCP for each agent can be written as:
+For brevity, let's define $v = [r^\top, z^\top]^\top$. Then, the parametrized MiCP for each agent can be written as:
 
 $$
-c(v; \theta, \lambda) = [(\nabla_\textbf{x}\mathcal{L}^i)^\top_{i\in[N]}, (\nabla_{\textbf{u}^i}\mathcal{L}^i)^\top_{i\in[N]}, (E^i)^\top_{i\in[N]}]^\top
-h(v; \theta, \lambda) = [(I^i)^\top_{i\in[N]}]
+  \begin{align}
+  c(v; \theta, \lambda) &= [(\nabla_\textbf{x}\mathcal{L}^i)^\top_{i\in[N]}, (\nabla_{\textbf{u}^i}\mathcal{L}^i)^\top_{i\in[N]}, (E^i)^\top_{i\in[N]}]^\top\\
+  h(v; \theta, \lambda) &= [(I^i)^\top_{i\in[N]}]
+  \end{align}
 $$
 
 For brevity, let's define a function $F$ such that $F = [c(\cdot)^\top,h(\cdot)^\top]^\top$.
@@ -229,7 +231,7 @@ For brevity, let's define a function $F$ such that $F = [c(\cdot)^\top,h(\cdot)^
 
 Now that we have constructed an MiCP that encodes our game's first order necessary conditions, we can do some interesting things with it. For example, applying the chain rule will allow us to achieve our goal of deriving game solutions with respect to the game's parameters.
 
-<!-- <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem (IFT)</a> -->
+<!-- (and <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem (IFT)</a>) -->
 
 Let's denote the objective of Problem 1 as $\mathcal{P}(\cdot)$ such that $\mathcal{P}(\textbf{x}(\theta,\gamma)) = \sum_{t=1}^T ~(h_t(x(t)) - y_t)^\top \Sigma_t^{-1} (h_t(x(t)) - y_t)$. We can then leverage the chain rule to compute its total derivative with respect to $(\theta,\gamma)$:
 
@@ -237,11 +239,83 @@ $$
 \nabla_{(\theta, \lambda)} \mathcal{P}(\textbf{x}(\theta,\gamma)) = (\nabla_{(\theta, \lambda)} v)^\top (\nabla_v \textbf{x})^\top (\nabla_\textbf{x} \mathcal{P}),
 $$
 
-with which we can update $(\theta,\gamma)$ accordingly.
+with which we can update $(\theta,\gamma)$ accordingly. The only term that is difficult to compute is $\nabla_{(\theta, \lambda)} v$. However, we can leverage <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem (IFT)</a> to derive exact values for $\nabla_{(\theta, \lambda)} v$ at a solution to the MiCP $v^\star$, where strict complementarity holds.
 
-## Experimental Setup
+<details class="proof">
+  <summary><strong>Derivation of $\nabla_{(\theta, \lambda)} v$</strong></summary>
 
-## Results
+  <div class="proof__body" markdown="1">
+  As a reminder, we define an MiCP as
+
+  $$
+  \begin{align}
+  c(r,z) &= 0\\
+  0 \leq z \perp h(&r,z) \geq 0.
+  \end{align}
+  $$
+
+  In the context of our game, the MiCP can store its first-order necessary conditions as:
+
+  $$
+  \begin{align}
+  c(v; \theta, \lambda) &= [(\nabla_\textbf{x}\mathcal{L}^i)^\top_{i\in[N]}, (\nabla_{\textbf{u}^i}\mathcal{L}^i)^\top_{i\in[N]}, (E^i)^\top_{i\in[N]}]^\top\\
+  h(v; \theta, \lambda) &= [(I^i)^\top_{i\in[N]}]
+  \end{align}
+  $$
+
+  where $v = [r^\top, z^\top]^\top$ stores the game states, controls, and lagrange multipliers for all players $i \in [N]$ for all times $t \in [T]$. We define the function $F(v; \theta, \lambda) = [c(v; \theta, \lambda)^\top,h(v; \theta, \lambda)^\top]^\top$. Let's analyze this function at solution points $v^\star$.
+
+  First, let's consider the complementarity constraints on $z$ and $h(\cdot)$ given by the second equation in the MiCP formulation. We can construct two index sets $\mathcal{I}$, which records all inactive inequality constraint dimensions of $h(\cdot)$, and $\mathcal{S}$, which records all other indices of $F$. Indexing $F$ at the elements of these sets results in vectors $F_\mathcal{I}$ and $F_\mathcal{S}$. 
+  
+  We know that the values of $F_\mathcal{I}$ are strictly positive, resulting in the Lagrange multipliers associated with these constraints being exactly $0$. As such, small changes in $(\theta, \lambda)$ preserve the positivity of the values of $F_\mathcal{I}$, and thus the corresponding Lagrange multipliers remain $0$. Thuse we find that $\nabla_{(\theta, \lambda)} v_\mathcal{I} = 0$, where $v_\mathcal{I}$ denotes the elements of $v$ that store the Lagrange multipliers corresponding to $F_\mathcal{I}$.
+
+  Now, turning our attention to the remaining elements of $F$ stored in $F_\mathcal{S}$. At a solution to $F$, $F_\mathcal{S}$ must equal $0$. Therefore, if we perturb $(\theta, \lambda)$ on the solution manifold, then $F_\mathcal{S}$ still must equal $0$. We can then leverage <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem</a> and the stationarity of $F$ with respect to $v$ to write:
+
+  $$
+  \begin{align}
+  0 &= D_{(\theta, \lambda)} F_\mathcal{S} = \nabla_{(\theta, \lambda)} F_\mathcal{S} + (\nabla_{v} F_\mathcal{S})(\nabla_{(\theta, \lambda)} v)\\
+  &\implies (\nabla_{(\theta, \lambda)} v) = (\nabla_{v} F_\mathcal{S})^{-1} (\nabla_{(\theta, \lambda)} F_\mathcal{S})
+  \end{align}
+  $$
+  
+  where $D_{(\theta, \lambda)}$ denotes the total derivative with respect to $(\theta, \lambda)$. Then, when $\nabla_{v} F_\mathcal{S}$ is invertible, we can find exact values of $\nabla_{(\theta, \lambda)} v$!
+
+  </div>
+</details>
+
+With these gradients taken, we can iteratively update $(\theta, \gamma)$ as needed to optimize $\mathcal{P}$ as shown in the algorithm below.
+
+<div class="algo">
+  <div class="algo__header">
+    <span class="algo__name">Algorithm 1</span>
+    <span class="algo__title">Gradient-Based Discount Factor Inference</span>
+  </div>
+
+  <div class="algo__meta">
+    <div><span class="algo__key">Hyperparameters:</span> Learning rate $\alpha$</div>
+    <div><span class="algo__key">Input:</span> Initial $\theta, \gamma$, observations $\textbf{y}$</div>
+  </div>
+
+  <ol class="algo__lines">
+    <li>$\theta_o \gets \theta$</li>
+    <li>$\gamma_o \gets \gamma$</li>
+    <li>$k \gets 0$</li>
+    <li>$\textbf{while } \textit{not converged } \textbf{do }$</li>
+    <li>$~~~~~v_k \gets \text{solveInnerMiCP}(\theta_k, \gamma_k)$</li>
+    <li>$~~~~~\nabla_{(\theta, \lambda)} \mathcal{P} \gets \text{calcGrad}(v_k, \theta_k, \gamma_k)$</li>
+    <li>$~~~~~\theta_{k+1} \gets \theta_k - \alpha \nabla_{\theta} \mathcal{P}$</li>
+    <li>$~~~~~\gamma_{k+1} \gets \max(0, \gamma_k - \alpha \nabla_{\gamma} \mathcal{P})$</li>
+    <li>$~~~~~k \gets k + 1$</li>
+    <li>$\textbf{end }$</li>
+    <li>$\textbf{return } (\theta_k, \gamma_k, \textbf{x}, \textbf{u})$</li>
+  </ol>
+</div>
+
+## Experimental Results
+
+Now that our method has been developed for inferring agent forsight and other game parameters has been developed, we can apply it to simulated and real-world data sets! We then compare the results of our experiments to baseline inverse game approaches, and show that our method outperforms them in both fully and partially observable settings. We have three experiments, shown below. Feel free to click through them and check them out!
+
+{% include experiments.html %}
 
 ## Some Concluding Thoughts
 

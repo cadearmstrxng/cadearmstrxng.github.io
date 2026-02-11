@@ -598,3 +598,344 @@
   border-color: rgba(255, 120, 120, 0.55);
   background: rgba(255, 120, 120, 0.12);
 }
+
+/* --- Optional proof dropdown --- */
+.proof {
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.proof > summary {
+  cursor: pointer;
+  list-style: none;           /* hides default marker in some browsers */
+  font-weight: 700;
+}
+
+.proof > summary::-webkit-details-marker {
+  display: none;              /* hides default marker in Chrome/Safari */
+}
+
+/* Custom caret */
+.proof > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 0.6rem;
+  transform: translateY(-0.02em);
+  transition: transform 0.15s ease;
+}
+
+.proof[open] > summary::before {
+  transform: rotate(90deg) translateX(0.05em);
+}
+
+.proof__body {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .proof {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+:root[data-theme="dark"] .proof__body {
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+/* --- Algorithm block (IEEE-ish) --- */
+.algo {
+  max-width: 600px;   /* ← adjust this number */
+  margin: 2rem auto;  /* ← centers it */
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.55);
+  overflow: hidden;
+}
+
+/* header bar like a caption */
+.algo__header {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.03);
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.algo__name {
+  font-weight: 800;
+}
+
+.algo__title {
+  font-weight: 650;
+}
+
+/* Input/Output section */
+.algo__meta {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.algo__key {
+  font-weight: 750;
+}
+
+/* numbered lines + line numbers */
+.algo__lines {
+  margin: 0;
+  padding: 0.85rem 1.1rem 0.95rem 3.2rem;
+  counter-reset: line;
+}
+
+.algo__lines > li {
+  list-style: none;
+  position: relative;
+  margin: 0.35rem 0;
+  line-height: 1.55;
+}
+
+.algo__lines > li::before {
+  counter-increment: line;
+  content: counter(line);
+  position: absolute;
+  left: -2.2rem;
+  width: 1.6rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: rgba(0,0,0,0.55);
+}
+
+/* nicer spacing for display math inside lines */
+.algo__lines .MathJax_Display {
+  margin: 0.4rem 0 0.2rem 0 !important;
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .algo {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+}
+
+:root[data-theme="dark"] .algo__header {
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+}
+
+:root[data-theme="dark"] .algo__meta {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+:root[data-theme="dark"] .algo__lines > li::before {
+  color: rgba(255,255,255,0.55);
+}
+
+/* --- Experiment carousel block --- */
+.exp {
+  position: relative;
+  margin: 2rem auto;
+  padding: 1.25rem 1.25rem 1.0rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(0,0,0,0.03);
+  // max-width: 900px;            /* <-- control width here */
+}
+
+.exp__top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.exp__tabs {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.exp__tab {
+  appearance: none;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(0,0,0,0.02);
+  border-radius: 12px;
+  padding: 0.45rem 0.8rem;
+  font-weight: 750;
+  cursor: pointer;
+  min-width: 175px;      /* ← try 44–56px */
+  text-align: center;
+}
+
+.exp__tab.is-active {
+  background: rgba(0,0,0,0.08);
+}
+
+.exp__viewport {
+  overflow: hidden;
+}
+
+.exp__page {
+  display: none;
+}
+
+.exp__page.is-active {
+  display: block;
+}
+
+.exp__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .exp__grid { grid-template-columns: 1fr; }
+}
+
+.exp__media img, .exp__media video {
+  width: 100%;
+  border-radius: 14px;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.05);
+}
+
+/* arrows */
+.exp__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-40%);
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.65);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.exp__arrow--left { left: -18px; }
+.exp__arrow--right { right: -18px; }
+
+@media (max-width: 700px) {
+  .exp__arrow--left { left: 8px; }
+  .exp__arrow--right { right: 8px; }
+}
+
+/* dots */
+.exp__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.exp__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+.exp__dot.is-active {
+  background: rgba(0,0,0,0.75);
+}
+
+/* --- Experiment content layout --- */
+.exp__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.exp__text {
+  line-height: 1.6;
+}
+
+.exp__text h3 {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .exp__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Wrap-around layout like your Bio page */
+.exp__textwrap {
+  position: relative;
+}
+
+.exp__float {
+  float: right;
+  width: 44%;              /* controls how big the image is */
+  max-width: 520px;
+  margin: 0.2rem 0 1rem 1.5rem;  /* space between image and text */
+  border-radius: 16px;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.05);
+}
+
+.exp__clear {
+  clear: both;             /* stop wrapping after the block */
+}
+
+/* Mobile: no float, stack naturally */
+@media (max-width: 900px) {
+  .exp__float {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 1rem 0;
+  }
+}
+
+/* Dark mode border */
+:root[data-theme="dark"] .exp__float {
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .exp {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+:root[data-theme="dark"] .exp__tab {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.82);
+}
+
+:root[data-theme="dark"] .exp__tab.is-active {
+  background: rgba(255,255,255,0.12);
+}
+
+:root[data-theme="dark"] .exp__arrow {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(30,30,32,0.85);
+  color: rgba(255,255,255,0.85);
+}
+
+:root[data-theme="dark"] .exp__dot {
+  background: rgba(255,255,255,0.28);
+}
+
+:root[data-theme="dark"] .exp__dot.is-active {
+  background: rgba(255,255,255,0.78);
+}
