@@ -24,8 +24,10 @@ title: "Inferring Discount Factors"
   </div>
 </div>
 
+<details class="section-drop">
+<summary>Primary Motivation</summary>
+<div class="section-drop__body" markdown="1">
 
-## Primary Motivation
 Dynamic game theory is a increasingly popular tool for modeling multi-agent interactions. Game-theoretic models presume that each agent wishes to minimize their own private objective function that depends on other agents' actions. These games typically evolve over a fixed time horizon in which agents care equally about each moment in time regardless of how far into the future each agent plans. However, is this realistic? 
 
 Take an example of drivers navigating a busy intersection. What if one (farsighted) driver slows down further in advance of the intersection than another (shortsighted) driver? A self-driving car that incorrectly predicts the behavior of both drivers may take prematurely evasive actions, resulting in uncessarily risky behavior.
@@ -36,7 +38,13 @@ Then, to interact with humans safely and efficiently, robots need to be able to 
 
 We demonstrate the benefits of modeling foresight through a series of simulated and real-world experiments. Before we get to that, let's discuss some of the background to this project and then get into the specifics of how it all works.
 
-## Background
+</div>
+</details>
+
+<details class="section-drop">
+<summary>Background</summary>
+<div class="section-drop__body" markdown="1">
+
 <div class="content-block" markdown = "1">
 
 **Notation Alert!**  
@@ -153,7 +161,13 @@ $$
 
 In our implementation, we solved MiCPs efficiently via off-the-shelf solvers. Specifically, we used <a href="https://www.gams.com/latest/docs/S_PATH.html" target="_blank" rel="noopener noreferrer">PATH Solver</a>.
 
-## Problem Statement
+</div>
+</details>
+
+<details class="section-drop">
+<summary>Problem Statement</summary>
+<div class="section-drop__body" markdown="1">
+
 Now that we understand what a game is, what a solution looks like, and how solutions can be found, we can introduce *inverse dynamic games*, which will enable us to use online trajectory data to solve for the discount factors and hidden parameters for each agent.
 
 Let's presume that some observer has obtained noisy measurements of the game state over time, and denote these observations $\textbf{y} = [y_1(x_1),y_2(x_2),...,y_T(x_T)]$. For simplification purposes, assume observations are drawn independently from Gaussian models $y_t(x_t) \sim \mathcal{N}(h_t(x_t), \Sigma_t)$ with known covariance $\Sigma_t$ and where $h_t(x_t)$ describes the expected output of the sensor at time $t$. 
@@ -183,7 +197,13 @@ $$
 
 Problem 1 can be separated into an outer *inverse* problem and an inner *forward* problem. The inner GOLNE problem is parametrized by the game parameters $\theta$ and discount factors $\gamma$, which are the decision variables of the inverse problem. However, solving the outer inverse problem entails a multitude of computational challenges. Particularly, the first-order necessary conditions of the inner GOLNE problem are certainly nonlinear in $\gamma$, making the overall problem non-convex. In addition, since the inner problem may contain inequality constraints, its first-order necessary conditions involve complementarity conditions, making the problem non-smooth.
 
-## Solution Approach
+</div>
+</details>
+
+<details class="section-drop">
+<summary>Solution Approach</summary>
+<div class="section-drop__body" markdown="1">
+
 Let's pause and recap. We want to solve an optimization problem that finds game parameters and discount factors that maximize the likelihood of producing some observations we have of the game. However, due to the game's structure, this optimization problem is both non-convex *and* non-smooth? How do we even go about solving this?
 
 Our approach: a constrained gradient decent algorithm that requires us to take derivatives of game *solutions* $(\textbf{x},\textbf{u})$ with respect to parameters $(\gamma, \theta)$. First, we have to represent $\mathcal{G}(\theta, \gamma)$ as a workable form: let's convert the game's first-order necessary conditions into an MiCP!
@@ -230,8 +250,6 @@ For brevity, let's define a function $F$ such that $F = [c(\cdot)^\top,h(\cdot)^
 ### Optimizing Game Parameters with Gradient Descent
 
 Now that we have constructed an MiCP that encodes our game's first order necessary conditions, we can do some interesting things with it. For example, applying the chain rule will allow us to achieve our goal of deriving game solutions with respect to the game's parameters.
-
-<!-- (and <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem" target="_blank" rel="noopener noreferrer">Implicit Function Theorem (IFT)</a>) -->
 
 Let's denote the objective of Problem 1 as $\mathcal{P}(\cdot)$ such that $\mathcal{P}(\textbf{x}(\theta,\gamma)) = \sum_{t=1}^T ~(h_t(x(t)) - y_t)^\top \Sigma_t^{-1} (h_t(x(t)) - y_t)$. We can then leverage the chain rule to compute its total derivative with respect to $(\theta,\gamma)$:
 
@@ -311,11 +329,23 @@ With these gradients taken, we can iteratively update $(\theta, \gamma)$ as need
   </ol>
 </div>
 
-## Experimental Results
+</div>
+</details>
+
+<details class="section-drop">
+<summary>Experimental Results</summary>
+<div class="section-drop__body" markdown="1">
 
 Now that our method has been developed for inferring agent forsight and other game parameters has been developed, we can apply it to simulated and real-world data sets! We then compare the results of our experiments to baseline inverse game approaches, and show that our method outperforms them in both fully and partially observable settings. We have three experiments, shown below. Feel free to click through them and check them out!
 
-{% include experiments.html %}
+{% include inf_disc_facts_experiments.html %}
 
-## Some Concluding Thoughts
+</div>
+</details>
 
+<details class="section-drop">
+<summary>Some Concluding Thoughts</summary>
+<div class="section-drop__body" markdown="1">
+
+</div>
+</details>

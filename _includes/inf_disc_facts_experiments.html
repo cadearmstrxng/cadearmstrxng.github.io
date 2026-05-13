@@ -1,0 +1,214 @@
+<div class="exp" data-exp>
+    <div class="exp__top">
+      <div class="exp__tabs" role="tablist" aria-label="Experiments">
+        <button class="exp__tab is-active" type="button" role="tab" aria-selected="true" data-exp-tab="0">Experiment 1</button>
+        <button class="exp__tab" type="button" role="tab" aria-selected="false" data-exp-tab="1">Experiment 2</button>
+        <button class="exp__tab" type="button" role="tab" aria-selected="false" data-exp-tab="2">Experiment 3</button>
+      </div>
+    </div>
+  
+    <button class="exp__arrow exp__arrow--left" type="button" aria-label="Previous experiment" data-exp-prev>‹</button>
+    <button class="exp__arrow exp__arrow--right" type="button" aria-label="Next experiment" data-exp-next>›</button>
+  
+    <div class="exp__viewport">
+      <section class="exp__page is-active" data-exp-page="0">
+        <div class="exp__textwrap">
+          <img class="exp__float" src="/assets/img/Simulation_photo_legend.png" alt="Simulated delivery robot trajectories at Whitis Ave. and Dean Keaton St.">
+          <h3>Experiment 1: Crosswalk Simulation</h3>
+          <p>This experiment involves $N = 2$ pedestrians navigating a crosswalk at an intersection on the UT Austin campus. The interesection is unique in 
+            that it becomes safe for all pedestrian crossing simultaneously, allowing students to cross diagonally and interact with one another. 
+          </p>
+          <strong><u>Experimental Setup </u> </strong>
+          <p>
+            We simulate two short-sighted ($\gamma < 1$) delivery robots who begin at the top right and left corners, respectively, and wish to reach their
+                goals at the corner's diagonal to them while minimizing their control effort.
+            As such, we can model robot <br> $i$'s cost as:
+            $$
+            \begin{align}
+            J_{\text{robot}}^i = \sum_{t=0}^T (\gamma^i)^t [w_\text{goal}^i ||p_t^i - \theta_\text{goal}^i||_2^2 + w_\text{ctrl}^i ||u_t^i||_2^2].
+            \end{align}
+            $$
+            where $p_t^i$ is agent $i$'s position at time $t$, $w_\text{goal}^i$ and $w_\text{ctrl}^i$ are cost weight terms for the goal and control cost, 
+            and $\theta_\text{goal}^i$ are parameters that define agent $i$'s goal position.
+          </p>
+          <p>
+            We model the robots as point masses with bounds on the velocity and control inputs, assume a time discretization of $\Delta = 0.1$, and play a game
+            over $T = 25$ time steps. Each agent's dynamics are modeled with a standard double integrator system, with the game state 
+            $x_t = [x_t^{1,\top},x_t^{1,\top}]^\top$. We additionally include collision avoidance inequality constraints to each agent such that the agents stay a certain
+            distance $d_\text{min}$ away from each other.
+          </p>
+          <strong><u>Results </u> </strong>
+          <p>
+            This experiment was mostly used to test the feasibility of the proposed method and to understand the difficulty of the problem. To this end, by 
+            simulating the trajectories we wanted to recover via a known game formulation, we should be able to recover the exact parameters of the game when noise is
+            not a factor. However, we are only interested in cases where noise is present, so there should be some slight error in the recovered trajectories.
+          </p>
+          <p>
+            In our initial attempts in this experiment, we found that our algorithm was able to infer the symmetry of the problem, but the recovered discount factors 
+            were very dependent on the initial guess. To isolate the root cause of this issue, we plotted a heatmap of $\mathcal{P}$ with respect to the discount factors 
+            in both the fully observable and partially observable cases, where the other parameters are fixed to their ground truth values.
+          </p>
+            <img src="/assets/img/heatmap.png" alt="Heatmap of $\mathcal{P}$ with respect to the discount factors in both the fully and partially observable cases." width="90%" style="display: block; margin: 0 auto; border-radius: 16px;">
+          <p>
+            The heatmap shows that there is a diagonally-shaped low-cost region when the discount factors are greater than ~$0.5$. This result shows that the game's equilibrium is 
+            relatively insensitive to the agents' absolute discount factors as long as they are similar. This motivated us to introduce a regularization scheme to Problem 1 
+            to encourage better solver performance. To this end, we added the term $c_\gamma ||1-\gamma||_2^2$ to the inverse problem. This term encodes the belief that agents 
+            are more farsighted. It should be noted that we did not use this regularization in any other experiments.
+
+            <div class="quiz" data-answer="b">
+              <div class="quiz__q"><strong>Quick check:</strong> Suppose we wanted to instead encode the belief that agents are more short-sighted. What term would we add 
+                to the inverse problem?
+              </div>
+            
+              <div class="quiz__choices" role="group" aria-label="Quiz choices">
+                <button class="quiz__choice" data-choice="a" type="button">A) $c_\gamma ||\gamma-1||_2^2$</button>
+                <button class="quiz__choice" data-choice="b" type="button">B) $c_\gamma ||\gamma||_2^2$</button>
+                <button class="quiz__choice" data-choice="c" type="button">c) $c_\gamma ||1-\gamma||_2^{0.5}$</button>
+              </div>
+            
+              <div class="quiz__feedback" aria-live="polite"></div>
+            
+              <div class="quiz__explanation">
+                <strong>Explanation:</strong> The minimum of $||\gamma||_2^2$ is achieved when $\gamma = 0$. Since we are wanting to minimize the inverse problem, by minimizing $||\gamma||_2^2$, we are encouraging the solver to find a $\gamma$ that is close to 0.
+              </div>
+            </div>
+          </p>
+          <p>
+            With the regularization scheme in place, we were able to turn our attention to the trajectory recovery results. We present results in both fully observable and partially observable
+            settings with $c_\gamma = 10^{-3}$. The two graphs below show the mean trajectory estimation error as a function of the observation noise standard deviation $\sigma$.
+          </p>
+          <p>
+            <figure style="display: inline-block; width: 49.5%; margin: 0;">
+              <img src="/assets/img/crosswalk_fo.png" alt="Fully observable results." width="100%" style="border-radius: 16px; display: block;">
+              <figcaption style="text-align: center; font-size: 0.85em; margin-top: 0.4em;">Fully Observable Trials</figcaption>
+            </figure>
+            <figure style="display: inline-block; width: 49.5%; margin: 0;">
+              <img src="/assets/img/crosswalk_po.png" alt="Partially observable results." width="100%" style="border-radius: 16px; display: block;">
+              <figcaption style="text-align: center; font-size: 0.85em; margin-top: 0.4em;">Partially Observable Trials</figcaption>
+            </figure>
+          </p>
+          <p>
+            The results show that our method substantially outperforms the baseline method in both cases. Interestingly, we can see that the our method's mean error is only marginally sensitive
+            to noise for both methods. Rather, the most noticeable effect of noise is an increase in the standard deviation of the errors. With these results, we conclude that our foresighted 
+            formulation can better predict the behavior of short-sighted agents in comparison to a state-of-the-art baseline.
+          </p>
+        </div>
+        <div class="exp__clear"></div>
+      </section>
+  
+      <section class="exp__page" data-exp-page="1">
+        <div class="exp__textwrap">
+          <h3>Experiment 2: InD Intersection</h3>
+          <p>
+            Our second experiment employs the <a href="https://ieeexplore.ieee.org/document/9304839" target="_blank" rel="noopener">inD Dataset</a>, which contains real-world data of naturalistic road user 
+            trajectories at German intersections that were collected using drones. The intersection we look at in this experiment (shown below) is found in Aachen, Germany.
+          </p>
+          <figure style="width: 75%; margin: 0 auto;">
+            <img src="/assets/img/InD_visualization.png" alt="Partially observable results." width="100%" style="border-radius: 12px; display: block;">
+          </figure>
+          <p>
+            This experiment involves $N = 4$ agents navigating this intersection. Two of the agents are pedestrians crossing a crosswalk, one is a car attempting to turn while the pedestrians
+            are crossing, and the final agent is a car attempting to go straight while behind the turning car. 
+          </p>
+          <strong><u>Experimental Setup </u> </strong>
+          <p>
+            The setup for our model in this example is very similar to that of the crosswalk simulation experiment. To begin, all agents have the previously mentioned collision avoidance inequality 
+            constraints. Additionally, we add inequality constraints so that the car agents are constrained to the road boundaries. We add similar constraints for the pedestrians so that they stay 
+            on the sidewalk. 
+          </p>
+          <p>
+            We model the pedestrians exactly as we modeled the robots in the crosswalk simulation experiment. Meanwhile, the cars' physical dynamics are modeled as bicycles with bounds on the control 
+            inputs. Explicitly, car agent $i$'s state is $x_t^i = [p_{x,t}^i, p_{y,t}^i, v_{t}^i, \psi_{t}^i]^\top$, where $p_{x,t}^i$ and $p_{y,t}^i$ are the $x$ and $y$ coordinates of the car's 
+            position at time $t$, $v_{t}^i$ is the car's velocity, and $\psi_{t}^i$ is the car's heading angle. The dynamics are given by:
+            $$
+            \begin{align*}
+                {x}_{t+1}^i = 
+                [
+                    p_{x,t}^i,~
+                    p_{y,t}^i,~
+                    v_{t}^i,~
+                    \psi_{t}^i
+                ]^\top+
+                \Delta
+                [
+                    v^i_t \cos(\psi_t^i),~
+                    v^i_t  \sin(\psi_t^i),~
+                    a_t^i,~
+                    v_t^i  \tan(\phi_t^i)/l
+                ]^\top
+            \end{align*}
+            $$
+            with control input $u_t^i = [a_t^i, \phi_t^i]^\top$, where $a_t^i$ is the car's acceleration and $\phi_t^i$ is the car's steering angle. Additionally, $l$ is the wheelbase of the car.
+          </p>
+          <p>
+            Depending on whether the $i^{th}$ agent is a pedestrian or a car, we model their cost slightly differently. The two pedestrian agents use the same cost as the robots in the previous crosswalk 
+            simulation experiment. The car agents have an additional cost term that minimize the distance to their lane centers. We model the $i^{th}$ car agent's lane center as a set, 
+            $\mathcal{C}^i = \{(c_{x,t}^i,c_{y,t}^i)\}_{t = 0}^T$, generated from a polynomial curve fit to lane center points. With this in hand, we can model the $i^{th}$ car agent's cost as:
+            $$
+            \begin{align}
+            J_{\text{car}}^i = J_{\text{robot}}^i + \sum_{t=0}^T (\gamma^i)^t [w_\text{lane}^i ||p_t^i - c_t^i||_2^2.
+            \end{align}
+            $$
+            where $w_\text{lane}^i$ weights the lane center cost term and $c_t^i$ is the $t^{th}$ element of set $\mathcal{C}^i$.
+            The original inD dataset interaction we use takes place over $162$ frames at $25$ frames per second. To help with computational efficiency, we downsample the data by a factor of $6$,
+            resulting in a game horizon of $T = 28$.
+          </p>
+          <strong><u>Results </u> </strong>
+          <p>
+            The purpose of this experiment is to demonstrate that our foresighted model better predicts real-world human behavior in comparison to a state-of-the-art baseline. To this end, we
+            focus this experiment on fitting our model to the data collected from the interaction shown in the figure above and compare the results to the baseline.
+          </p>
+          <p>
+            In the above figure, we present a representative trial of our method and the baseline with the real-world data from the inD dataset. The figure shows the initial positions, the percieved
+            and inferred goals, the observations and recovered trajectories up to a time $t = 15$, and the planned trajectories for all four agents at $t = 15$ for the baseline and our method. This
+            visualization shows a better recovery of the ground-truth goal position than the baseline and a trajectory recovery that is closer to the observations in L$_2$ distance.
+          </p>
+          <p>
+            The two graphs below show the mean trajectory estimation error as a function of the observation noise standard deviation $\sigma$ for the fully observable and partially observable cases.
+          </p>
+          <p>
+            <figure style="display: inline-block; width: 49.5%; margin: 0;">
+              <img src="/assets/img/fo_both_ind_bootstrapped-1.png" alt="Bootstrapped fully observable results." width="100%" style="border-radius: 16px; display: block;">
+              <figcaption style="text-align: center; font-size: 0.85em; margin-top: 0.4em;">Fully Observable Trials</figcaption>
+            </figure>
+            <figure style="display: inline-block; width: 49.5%; margin: 0;">
+              <img src="/assets/img/po_both_ind_bootstrapped-1.png" alt="Bootstrapped partially observable results." width="100%" style="border-radius: 16px; display: block;">
+              <figcaption style="text-align: center; font-size: 0.85em; margin-top: 0.4em;">Partially Observable Trials</figcaption>
+            </figure>
+          </p>
+          <p>
+            On average, our method consistently shows a significant improvement on the baseline in both the fully observable and partially observable cases. However, both methods seem to be relatively
+            insensitive to increases in noise. Also, see that the noiseless-observation trajectory error is non-zero? We attribute that to model mismatch, referring to the differences between actual 
+            human behavior and the model's recreations of it. We hypothesize two dominate sources of model mismatch:
+            <ol>
+              <li>Our model's open-loop information structure, which was chosen for tractability. We hypothesize that closed-loop information structures is more representative of human decision-making
+                processes.</li>
+              <li>The expressiveness of our cost structure is likely limited in its ability to capture the true human behavior. More complex cost structures, such as those encoded by neural networks,
+                may be able to capture more complex human behavior.
+              </li>
+            </ol>
+          </p>
+          <p>
+            These results then show that our foresighted model can better predict real-world human behavior in comparison to a state-of-the-art baseline, making it a useful tool that can be used to 
+            enable safer and more efficient interactions between robots and humans!
+          </p>
+        </div>
+        <div class="exp__clear"></div>
+      </section>
+  
+      <section class="exp__page" data-exp-page="2">
+        <div class="exp__grid">
+          <div class="exp__text">
+            <h3>Experiment 3: Real Data</h3>
+            <p>Results, metrics, etc.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  
+    <div class="exp__dots" aria-label="Experiment pagination">
+      <button class="exp__dot is-active" type="button" aria-label="Go to experiment 1" data-exp-dot="0"></button>
+      <button class="exp__dot" type="button" aria-label="Go to experiment 2" data-exp-dot="1"></button>
+      <button class="exp__dot" type="button" aria-label="Go to experiment 3" data-exp-dot="2"></button>
+    </div>
+  </div>

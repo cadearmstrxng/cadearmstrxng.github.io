@@ -810,18 +810,30 @@
 .exp__arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-40%);
+  transform: translateY(-50%);
   width: 38px;
   height: 38px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.14);
   background: rgba(255,255,255,0.65);
   cursor: pointer;
-  font-size: 22px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
+  font-size: 0;             /* hide the text glyph */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.exp__arrow::after {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+}
+
+.exp__arrow--left::after  { transform: rotate(-135deg) translate(-1px,  1px); }
+.exp__arrow--right::after { transform: rotate(45deg)   translate(-1px,  1px); }
 
 .exp__arrow--left { left: -18px; }
 .exp__arrow--right { right: -18px; }
@@ -877,6 +889,12 @@
 /* Wrap-around layout like your Bio page */
 .exp__textwrap {
   position: relative;
+}
+
+/* When h3 is the first child (no float image above it), restore the top margin
+   so it matches the visual position in sections that have a float image first */
+.exp__textwrap > h3:first-child {
+  margin-top: 1rem;
 }
 
 .exp__float {
@@ -938,4 +956,44 @@
 
 :root[data-theme="dark"] .exp__dot.is-active {
   background: rgba(255,255,255,0.78);
+}
+
+/* --- Section dropdowns --- */
+.section-drop {
+  margin: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.section-drop > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.2;
+  user-select: none;
+}
+
+.section-drop > summary::-webkit-details-marker { display: none; }
+
+.section-drop > summary::before {
+  content: "▸";
+  font-size: 0.7em;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.section-drop[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.section-drop__body {
+  padding: 0.25rem 0 1.5rem 0;
+}
+
+:root[data-theme="dark"] .section-drop {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
