@@ -197,12 +197,49 @@
       </section>
   
       <section class="exp__page" data-exp-page="2">
-        <div class="exp__grid">
-          <div class="exp__text">
-            <h3>Experiment 3: Real Data</h3>
-            <p>Results, metrics, etc.</p>
-          </div>
+        <div class="exp__textwrap">
+          <h3>Experiment 3: Waymax Simulation</h3>
+          <p>
+            Our final experiment employs the <a href="https://arxiv.org/abs/2310.08710" target="_blank">Waymax simulator</a>, which has been built atop the 
+            <a href="https://waymo.com/open/" target="_blank">Waymo Open Motion Dataset</a>. This simulator has been trained on human behavior data and is able to generate human-like responses
+            to an ego vehicle's actions. 
+          </p>
+          <figure style="width: 85%; margin: 0 auto;">
+            <img src="/assets/img/waymax_graphics-1.png" alt="Partially observable results." width="100%" style="border-radius: 12px; display: block;">
+          </figure>
+          <p>
+            This experiment involves $N = 4$ cars naviating an intersection. The ego agent is attepting to make a left turn while the other agents are going straight. Its goal is then to
+            infer the simulated humans' objectives and foresightedness from the data collected from the interaction, and plan to safely merge into oncoming traffic via a receding horizon
+            planner.
+          </p>
+          <strong><u>Experimental Setup </u> </strong>
+          <p>
+            Our experimental setup for this problem is similar to the previous examples. All agents have the previously mentioned collision avoidance inequality constraints. We model all
+            of the agents' dynamics as we did in the inD intersection experiment. Likewise, their costs are nearly the same, albiet with a couple notable changes:
+            <ol>
+              <li>The lane center cost term is simplified to only consider x-coordinate of the car's position. This is because the road is relatively straight after the turn.</li>
+              <li>We add a quadratic target velocity tracking cost to model agents' desire to maintain posted speed limits.</li>
+            </ol>
+            It should also be noted that the ego agent has no parameters of its own to infer, and instead only uses our method to infer the parameters of the other agents. Lastly, the 
+            scenario takes place over a horizon of $T = 50$ time steps with a discretization of $\Delta = 0.1\text{s}$. Additionally, the ego agent has a planning horizon of $T = 11$ time steps.
+          </p>
+          <strong><u>Results </u> </strong>
+          <p>
+            The purpose of this experiment is to demonstrate that our method can be integrated into a receding horizon planner to generate safe and efficient policies for autonomous vehicles
+            as they navigate complex scenarios and interact with other human-driven vehicles. To this end, we present several metrics to evaluate the safety and efficiency of the ego agent. Additionally,
+            a representative trial of the simulation is shown above.
+          </p>
+          <figure style="width: 85%; margin: 0 auto;">
+            <img src="/assets/img/waymax_graph_noise_0.1 (1)-1.png" alt="Partially observable results." width="100%" style="border-radius: 12px; display: block;">
+          </figure>
+          <p>
+            The figure above shows a yarnball plot of the distance between the ego agent and the other agents as a function of time as a safety metric and the ego agent's distance to its own goal
+            as a function of time as an efficiency metric. We can see that a foresighted game-theoretic receding horizon planner maintains a distance of over $6\text{m}$ from the other agents at
+            all times, even at high levels of observation noise. Additionally, the ego agent is able to minimize the distance to its own goal in all trials. These results show that our method
+            yiels safe and efficient behavior when employed in receding horizon planning schemes and tasked with interacting with other human-driven vehicles.
+          </p>
         </div>
+        <div class="exp__clear"></div>
       </section>
     </div>
   

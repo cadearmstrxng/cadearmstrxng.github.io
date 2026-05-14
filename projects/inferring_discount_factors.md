@@ -344,8 +344,14 @@ Now that our method has been developed for inferring agent forsight and other ga
 </details>
 
 <details class="section-drop">
-<summary>Some Concluding Thoughts</summary>
+<summary>Some Concluding Remarks</summary>
 <div class="section-drop__body" markdown="1">
 
+To summarize our work here, we formulate a noncooperative game that models potentially foresighted agents by associated each one with an unknown discount factor. We then solve for these
+discount factors by rewriting the equilibrium conditions of the resulting game as a mixed complementarity problem to leverage the directional differentiability of its equilibrium solutions
+with respect to unknown parameters. This enables us to solve an *inverse game* problem and identify discount factors and other game parameters via a gradient descent method. We then verify
+and test our results in comparison to state-of-the-art baselines, in which we demonstrate superior performance.
+
+Thank you for reading, and I hope you enjoyed! I'd like to acknowledge [David Fridovich-Keil](https://www.ae.utexas.edu/people/faculty/faculty-directory/fridovich-keil), [Kushagra Gupta](https://autonomy.oden.utexas.edu/profiles/kushagra-gupta), and [Xinjie Liu](https://autonomy.oden.utexas.edu/profiles/xinjie-liu) for their guidance and advising on this project. Their support was invaluable, especially given it was one of my first introductions to game theory. I'd also like to give special thanks to my co-author [Ryan J. Park](https://ryanjpark03.github.io/), who was a fantastic collaborator throughout.
 </div>
 </details>
