@@ -15,7 +15,7 @@ As doctoral student in the Department of Aerospace Engineering at the University
 
 <hr class="bio-divider">
 ## Highlights
-<div class="card-grid">
+<div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(0, 280px)); justify-content: center;">
   <a class="card" href="{{ '/projects/inferring_discount_factors' | relative_url }}">
     <div class="card__title">Inferring Discount Factors</div>
     <div class="card__thumb"><img
@@ -26,7 +26,7 @@ As doctoral student in the Department of Aerospace Engineering at the University
     <div class="card__text">Using inverse game theory to predict and plan around foresighted behavior.</div>
   </a>
 
-  <a class="card" href="{{ '/projects/learning_value_functions' | relative_url }}">
+  <!-- <a class="card" href="{{ '/projects/learning_value_functions' | relative_url }}">
     <div class="card__title">Learning Value Functions</div>
     <div class="card__thumb"></div>
     <div class="card__text">One–two sentence summary. Focus on outcome: what you built / proved / enabled.</div>
@@ -36,7 +36,7 @@ As doctoral student in the Department of Aerospace Engineering at the University
     <div class="card__title">PE Games on Invariant Tori</div>
     <div class="card__thumb"></div>
     <div class="card__text">One–two sentence summary. Link goes to the Projects page section.</div>
-  </a>
+  </a> -->
 </div>
 
 <hr class="bio-divider">

@@ -178,9 +178,7 @@ Given these observations, we want to find the $\theta, and \gamma$ that would mo
 
 **Example:**  
 
-Say I observe an agent starting at an initial state $x_o$. Over $T$ time steps, I see the agent take actions that move it closer and closer to the origin, $(0,0)$. If I were to assume that the agent only cared about getting to some goal position $x^\star$, I would, based on my observations of the agent, guess that the goal position is $x^\star = (0,0)$. 
-
-This is an example of Inverse Reinforcement Learning---however, when extended to multi-agent games, it becomes Inverse Game Theory. In our formulation, the goal position is a great example of what parameters we would want to store in $\theta$.
+Say I observe an agent starting at an initial state $x_o$. Over $T$ time steps, I see the agent take actions that move it closer and closer to the origin, $(0,0)$. If I were to assume that the agent only cared about getting to some goal position $x^\star$, I would, based on my observations of the agent, guess that the goal position is $x^\star = (0,0)$. In our formulation, the goal position is a great example of what parameters we would want to store in $\theta$.
 
 </div>
 
@@ -204,7 +202,7 @@ Problem 1 can be separated into an outer *inverse* problem and an inner *forward
 <summary>Solution Approach</summary>
 <div class="section-drop__body" markdown="1">
 
-Let's pause and recap. We want to solve an optimization problem that finds game parameters and discount factors that maximize the likelihood of producing some observations we have of the game. However, due to the game's structure, this optimization problem is both non-convex *and* non-smooth? How do we even go about solving this?
+Let's pause and recap. We want to solve an optimization problem that finds game parameters and discount factors that maximize the likelihood of producing some observations we have of the game. However, due to the game's structure, this optimization problem is both non-convex *and* non-smooth, making this a difficult problem to solve.
 
 Our approach: a constrained gradient decent algorithm that requires us to take derivatives of game *solutions* $(\textbf{x},\textbf{u})$ with respect to parameters $(\gamma, \theta)$. First, we have to represent $\mathcal{G}(\theta, \gamma)$ as a workable form: let's convert the game's first-order necessary conditions into an MiCP!
 
